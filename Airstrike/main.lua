@@ -16,7 +16,7 @@ end
 local color = {0, 0, 1, 1}
 
 function love.update(dt)
-
+--test
     if love.keyboard.isDown("w") then
         down.y = down.y - 5
     end
