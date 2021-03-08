@@ -1,0 +1,1 @@
+Air Strike: En kub rör sig vertikalt genom att antingen trycka "W" eller "S". Bakgrund rör sig horissontellt. To do list - Flygplan, hinder, skott.
