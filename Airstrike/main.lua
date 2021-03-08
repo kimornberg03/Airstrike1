@@ -7,10 +7,13 @@ function love.load()
     backspeed = 100
 
     love.window.setMode(600, 300,{resizable=false})
-    love.window.setTitle("AirStrike IV")
+    love.window.setTitle("AirStrike")
     bg = love.graphics.newImage("background.png")
     iWidth, iHeight = bg:getDimensions()
     wWidht, wHeight = love.window.getMode()
+
+    airplane = love.graphics.newImage("Airplane.png")
+
 end
 
 local color = {0, 0, 1, 1}
@@ -36,5 +39,5 @@ end
 
 function love.draw()
     love.graphics.draw(bg, x, y)
-    love.graphics.rectangle("fill", 50, down.y, 30, 30 )
+    love.graphics.draw(airplane, 10, down.y)
 end
