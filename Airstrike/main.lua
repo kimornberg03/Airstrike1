@@ -20,14 +20,34 @@ function love.load()
     window = {}
     window.Widht, window.Height = love.window.getMode()
 
+    astroidPictable = {}
+    astroidtable = {}
+    astroidTime = 0
+    astroidTimeEnd = love.math.random(0.5, 2)
+
+    local strpic = "astroid"
+
+    for i = 1, 3 do
+       table.insert(astroidPictable, strpic..i..".png") 
+    end
     
+
+    astroid = {}
+    astroid.x = window.Width
+    astroid.y = 0
+    astroid.pic = nil
+    astroid.picWidht  = 0
+    astroid.picHeight = 0
+    astroid.speed = 100
+    astroid.dead = false
+
 
 end
 
 function love.update(dt)
 
     if love.keyboard.isDown("w") then
-       if (airplane.y > 0 ) then 
+       if (airplane.y > 0) then 
         airplane.y = airplane.y - 5
        end
     end
@@ -44,10 +64,31 @@ function love.update(dt)
         back.x = 0
     end
 
+    astroidTime = astroidTime + dt
+    if (astroidTime > astroidTimeEnd) then
+        astroidTime = 0
+        astroidTimeEnd = love.math.random(0.5, 2)
+        a = astroid
+        a.y = love.math.random(0, window.Height)
+        a.pic = astroidPictable[love.math.random(1, 3)]
+       -- a.picWidht, a.picHeight = a.pic:getDimensions()
+
+        table.insert(astroidtable, a)
+    end
 end
+
+
 
 
 function love.draw()
     love.graphics.draw(back.pic, back.x, back.y)
     love.graphics.draw(airplane.pic, airplane.x, airplane.y)
+
+    if (astroidtable ~= nil) then 
+       
+        for i, ast in ipair(astroidtable) do
+            love.graphics.draw(ast.pic, ast.x, ast.y)
+        end
+
+    end
 end
