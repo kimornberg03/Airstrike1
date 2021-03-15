@@ -11,37 +11,35 @@ function love.load()
     back.y = 0
     back.pic = love.graphics.newImage("background.png")
     back.Width, back.Height = back.pic:getDimensions()
+    back.Speed = 100
 
 
-    x = 0
-    y = 0
-
-    backspeed = 100
 
     love.window.setMode(600, 300,{resizable=false})
     love.window.setTitle("AirStrike")
-    --bg = love.graphics.newImage("background.png")
-  --  iWidth, iHeight = bg:getDimensions()
-    wWidht, wHeight = love.window.getMode()
+    window = {}
+    window.Widht, window.Height = love.window.getMode()
 
     
 
 end
 
-local color = {0, 0, 1, 1}
-
 function love.update(dt)
 
     if love.keyboard.isDown("w") then
+       if (airplane.y > 0 ) then 
         airplane.y = airplane.y - 5
+       end
     end
 
     if love.keyboard.isDown("s") then
+        if (airplane.y < (window.Height- airplane.Height)) then 
         airplane.y = airplane.y + 5
+        end
     end
     
-    if (back.x > -(back.Width - wWidht)) then
-        back.x = back.x - (backspeed * dt)
+    if (back.x > -(back.Width - window.Widht)) then
+        back.x = back.x - (back.Speed * dt)
     else 
         back.x = 0
     end
