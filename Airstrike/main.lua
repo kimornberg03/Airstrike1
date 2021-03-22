@@ -1,10 +1,12 @@
 function love.load()
+
+    gameEnd = false
     
     airplane = {}
     airplane.x = 10
     airplane.y = 150
     airplane.pic = love.graphics.newImage("Airplane.png")
-    airplane.width, airplane.Height = airplane.pic:getDimensions()
+    airplane.Width, airplane.Height = airplane.pic:getDimensions()
 
     back = {}
     back.x = 0
@@ -18,29 +20,21 @@ function love.load()
     love.window.setMode(600, 300,{resizable=false})
     love.window.setTitle("AirStrike")
     window = {}
-    window.Widht, window.Height = love.window.getMode()
+    window.Width, window.Height = love.window.getMode()
 
-    astroidPictable = {}
-    astroidtable = {}
+    
+    
     astroidTime = 0
     astroidTimeEnd = love.math.random(0.5, 2)
 
+    astroidPictable = {}
     local strpic = "astroid"
 
     for i = 1, 3 do
        table.insert(astroidPictable, strpic..i..".png") 
     end
     
-
     astroid = {}
-    astroid.x = window.Width
-    astroid.y = 0
-    astroid.pic = nil
-    astroid.picWidht  = 0
-    astroid.picHeight = 0
-    astroid.speed = 100
-    astroid.dead = false
-
 
 end
 
@@ -58,37 +52,49 @@ function love.update(dt)
         end
     end
     
-    if (back.x > -(back.Width - window.Widht)) then
+    if (back.x > -(back.Width - window.Width)) then
         back.x = back.x - (back.Speed * dt)
     else 
         back.x = 0
     end
+     
+    for i, a in ipairs(astroid) do
+        a.x = a.x - (a.speed * dt)
+        if (a.x < (0 - a.pic:getWidth())) then
+            gameEnd = true
+        end
+    end
 
     astroidTime = astroidTime + dt
+
     if (astroidTime > astroidTimeEnd) then
         astroidTime = 0
         astroidTimeEnd = love.math.random(0.5, 2)
-        a = astroid
-        a.y = love.math.random(0, window.Height)
-        a.pic = astroidPictable[love.math.random(1, 3)]
-       -- a.picWidht, a.picHeight = a.pic:getDimensions()
-
-        table.insert(astroidtable, a)
+        astroid[#astroid+1] = {
+            x = window.Width,
+            y = love.math.random(0, window.Height),
+            speed = love.math.random(50, 300),
+            pic = love.graphics.newImage(astroidPictable[love.math.random(1, 3)]),
+        }     
     end
 end
-
-
 
 
 function love.draw()
-    love.graphics.draw(back.pic, back.x, back.y)
-    love.graphics.draw(airplane.pic, airplane.x, airplane.y)
-
-    if (astroidtable ~= nil) then 
-       
-        for i, ast in ipair(astroidtable) do
+    
+    
+    if (gameEnd == false) then
+        
+        love.graphics.draw(back.pic, back.x, back.y)
+        love.graphics.draw(airplane.pic, airplane.x, airplane.y)
+    
+   
+        for i, ast in ipairs(astroid) do
             love.graphics.draw(ast.pic, ast.x, ast.y)
         end
-
+    else
+        love.graphics.print("Game end", 100, 100)
     end
 end
+
+
