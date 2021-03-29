@@ -5,18 +5,18 @@ function love.load()
     airplane = {}
     airplane.x = 10
     airplane.y = 150
-    airplane.pic = love.graphics.newImage("Airplane.png")
+    airplane.pic = love.graphics.newImage("Pictures/Airplane.png")
     airplane.Width, airplane.Height = airplane.pic:getDimensions()
 
     back = {}
     back.x = 0
     back.y = 0
-    back.pic = love.graphics.newImage("background.png")
+    back.pic = love.graphics.newImage("Pictures/background.png")
     back.Width, back.Height = back.pic:getDimensions()
     back.Speed = 100
 
     bullet = {}
-    bullet.pic = love.graphics.newImage("Bullet.png")
+    bullet.pic = love.graphics.newImage("Pictures/Bullet.png")
     bullet.Width, bullet.Height = bullet.pic:getDimensions()
 
     love.window.setMode(600, 300,{resizable=false})
@@ -31,7 +31,7 @@ function love.load()
     astroidTimeEnd = love.math.random(astroidRandomMin, astroidRandomMax)
 
     astroidPictable = {}
-    local strpic = "astroid"
+    local strpic = "Pictures/astroid"
 
     for i = 1, 3 do
        table.insert(astroidPictable, strpic..i..".png") 
