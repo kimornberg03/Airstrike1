@@ -24,8 +24,8 @@ function love.load()
     window = {}
     window.Width, window.Height = love.window.getMode()
 
-    astroidRandomMin = 0.5
-    astroidRandomMax = 2.5
+    astroidRandomMin = 2
+    astroidRandomMax = 4
     
     astroidTime = 0
     astroidTimeEnd = love.math.random(astroidRandomMin, astroidRandomMax)
@@ -41,6 +41,15 @@ function love.load()
     bullets = {}
     bulletsSpeed = 300
     maxBullets = 5
+    starttimeBool = false
+    starttime = 0
+    elapsedTime = 0
+
+    boom = {}
+    boompic = {}
+    for i = 0, 19 do
+        table.insert(boompic, "Pictures/Ex/pic"..i..".png")
+    end
 end
 
 function love.update(dt)
@@ -68,7 +77,7 @@ function love.update(dt)
     else 
         back.x = 0
     end
-     
+
     for i, a in ipairs(astroid) do
         a.x = a.x - (a.speed * dt)
 
@@ -78,9 +87,18 @@ function love.update(dt)
 
         for y, b in ipairs(bullets) do
             if (a.x < (b.x + bullet.Width) and (b.y > a.y) and (b.y < (a.y + a.Height))) then
+                addBoom(a.x, a.y)
                 table.remove(astroid, i)
                 table.remove(bullets, y)
             end
+        end
+    end
+
+    for j, exp in ipairs(boom) do
+        exp.picnumber = exp.picnumber + 1
+
+        if exp.picnumber > 19 then
+            table.remove(boom, j)
         end
     end
 
@@ -92,6 +110,26 @@ function love.update(dt)
        end
     end
 
+    if (elapsedTime > 10 and elapsedTime < 20) then
+        astroidRandomMin = 1
+        astroidRandomMax = 3
+    elseif (elapsedTime > 20 and elapsedTime < 30) then
+        astroidRandomMin = 0.5
+        astroidRandomMax = 2
+    elseif (elapsedTime > 30 and elapsedTime < 40) then
+        astroidRandomMin = 0.3
+        astroidRandomMax = 1.5
+    elseif (elapsedTime > 40 and elapsedTime < 50) then
+        astroidRandomMin = 0.2
+        astroidRandomMax = 1.25
+    elseif (elapsedTime > 50 and elapsedTime < 60) then
+        astroidRandomMin = 0.1
+        astroidRandomMax = 1
+    elseif (elapsedTime > 60 and elapsedTime < 100) then
+        astroidRandomMin = 0.001
+        astroidRandomMax = 0.002
+    end
+
     astroidTime = astroidTime + dt
 
     if (astroidTime > astroidTimeEnd) then
@@ -99,6 +137,15 @@ function love.update(dt)
         astroidTimeEnd = love.math.random(astroidRandomMin, astroidRandomMax)  
         addAstorid()     
     end
+end
+
+function addBoom(x, y)
+    
+    boom[#boom+1] = {
+        x = x,
+        y = y,
+        picnumber = 0
+    } 
 end
 
 function addBullet()
@@ -131,13 +178,19 @@ end
 
 
 function love.draw()
-    
+
     
     if (gameEnd == false) then
         
         love.graphics.draw(back.pic, back.x, back.y)
         love.graphics.draw(airplane.pic, airplane.x, airplane.y)
     
+        if ((starttimeBool) == false) then
+            starttime = os.clock()
+            starttimeBool = true
+        end
+
+        elapsedTime = os.clock() - starttime
    
         for i, ast in ipairs(astroid) do
             love.graphics.draw(ast.pic, ast.x, ast.y)
@@ -146,6 +199,11 @@ function love.draw()
         for y, bul in ipairs(bullets) do
             love.graphics.draw(bullet.pic, bul.x, bul.y)
         end
+
+        for j, exp in ipairs(boom) do
+            love.graphics.draw(love.graphics.newImage(boompic[exp.picnumber]), exp.x, exp.y)
+        end        
+        love.graphics.print(elapsedTime, 100, 100)
     else
         love.graphics.print("Game end", 100, 100)
     end
