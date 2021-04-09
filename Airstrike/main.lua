@@ -191,7 +191,10 @@ function love.draw()
         end
 
         elapsedTime = os.clock() - starttime
+        local str = "Airstrike       "..string.format("Time: %.2f", elapsedTime)
    
+
+        love.window.setTitle(str)
         for i, ast in ipairs(astroid) do
             love.graphics.draw(ast.pic, ast.x, ast.y)
         end
@@ -203,9 +206,18 @@ function love.draw()
         for j, exp in ipairs(boom) do
             love.graphics.draw(love.graphics.newImage(boompic[exp.picnumber]), exp.x, exp.y)
         end        
-        love.graphics.print(elapsedTime, 100, 100)
+  
     else
-        love.graphics.print("Game end", 100, 100)
+        love.window.setTitle("AirStrike")
+        love.graphics.setNewFont(12)
+        local str = string.format("Time: %.2f", elapsedTime)
+        love.graphics.print(str,10,10)
+        str = "Game Over"
+        local font = love.graphics.setNewFont(25)
+        local width = font:getWidth(str)
+        local height = font:getHeight(str)
+
+        love.graphics.print(str, ((window.Width/2) - width/2), ((window.Height/2) - height/2))
     end
 
 end
