@@ -50,9 +50,23 @@ function love.load()
     for i = 0, 19 do
         table.insert(boompic, "Pictures/Ex/pic"..i..".png")
     end
+
+    music = love.audio.newSource("music.mp3", "stream")
+    music:setVolume(1)
+    music:setLooping(true)
+
 end
 
+
+
 function love.update(dt)
+
+    if gameEnd == false then
+        music:play()
+    elseif gameEnd == true then
+        music:setVolume(0)
+end
+
 
     if love.keyboard.isDown("w") then
        if (airplane.y > 0) then 
@@ -64,6 +78,10 @@ function love.update(dt)
         if (airplane.y < (window.Height- airplane.Height)) then 
         airplane.y = airplane.y + 5
         end
+    end
+
+    if love.keyboard.isDown("r") then
+        love.event.quit("restart")
     end
 
     function love.keypressed( key )
