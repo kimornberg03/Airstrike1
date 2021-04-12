@@ -57,27 +57,26 @@ function love.load()
     music = love.audio.newSource("Sounds/music.mp3", "stream")
     music:setVolume(1)
     music:setLooping(true)
+    music:play()
  
     losing = love.audio.newSource("Sounds/losing.mp3", "stream")
     losing:setVolume(1)
     losing:setLooping(false)
-    
+    losingbool = true
     
 end
  
 function love.update(dt)
- 
-    if gameEnd == false then
-        music:play()
-    elseif gameEnd == true then
+
+    if (gameEnd == true and losingbool == true) then
         music:setVolume(0)
         losing:play()
+        losingbool = false
     end
  
  
     if love.keyboard.isDown("r") then
         love.event.quit("restart")
- 
     end
  
  
@@ -261,24 +260,25 @@ function love.draw()
     else
         --Draw title
         love.window.setTitle("AirStrike")
-        love.graphics.setNewFont(12)
+        love.graphics.setNewFont(15)
         --Draw players game time
         love.graphics.print(string.format("Time: %.2f", elapsedTime),10,10)
  
         --Create a string and font to get dimention of string
         local strgame = "Game Over"
         local font = love.graphics.setNewFont(25)
-        local width = font:getWidth(strgame)
-        local height = font:getHeight(strgame)
+        local widthG = font:getWidth(strgame)
+        local heightG = font:getHeight(strgame)
  
+
+        --Create a string and font to get dimention of string
         strrestart = "Press r to restart"
         local font = love.graphics.setNewFont(15)
-        local width = font:getWidth(strrestart)
-        local height = font:getHeight(strrestart)
+        local heightE = font:getHeight(strrestart)
  
-        --Draw Game Over
-        love.graphics.print(strgame, ((window.Width/2) - width/2), ((window.Height/2) - height/2))
-        love.graphics.print(strrestart, ((window.Width/8) - width/2), (window.Height/10) * 9)
+        --Draw Game Over and restart
+        love.graphics.print(strgame, ((window.Width/2) - widthG/2), ((window.Height/2) - heightG/2))
+        love.graphics.print(strrestart, 10, (window.Height - heightE - 10))
     end
  
 end
