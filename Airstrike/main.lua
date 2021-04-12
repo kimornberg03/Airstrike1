@@ -51,10 +51,13 @@ function love.load()
         table.insert(boompic, "Pictures/Ex/pic"..i..".png")
     end
 
-    music = love.audio.newSource("music.mp3", "stream")
+    music = love.audio.newSource("Sounds/music.mp3", "stream")
     music:setVolume(1)
     music:setLooping(true)
 
+    losing = love.audio.newSource("Sounds/losing.mp3", "stream")
+    losing:setVolume(1)
+    losing:setLooping(false)
 end
 
 
@@ -65,13 +68,7 @@ function love.update(dt)
         music:play()
     elseif gameEnd == true then
         music:setVolume(0)
-end
-
-
-    if love.keyboard.isDown("w") then
-       if (airplane.y > 0) then 
-        airplane.y = airplane.y - 5
-       end
+        losing:play()
     end
 
     if love.keyboard.isDown("s") then
@@ -230,12 +227,19 @@ function love.draw()
         love.graphics.setNewFont(12)
         local str = string.format("Time: %.2f", elapsedTime)
         love.graphics.print(str,10,10)
-        str = "Game Over"
-        local font = love.graphics.setNewFont(25)
-        local width = font:getWidth(str)
-        local height = font:getHeight(str)
+        strgame = "Game Over"
+        local font = love.graphics.setNewFont(35)
+        local width = font:getWidth(strgame)
+        local height = font:getHeight(strgame)
 
-        love.graphics.print(str, ((window.Width/2) - width/2), ((window.Height/2) - height/2))
+        strrestart = "Press r to restart"
+        local font = love.graphics.setNewFont(15)
+        local width = font:getWidth(strrestart)
+        local height = font:getHeight(strrestart)
+
+
+        love.graphics.print(strgame, ((window.Width/2) - width/2), ((window.Height/2) - height/2))
+        love.graphics.print(strrestart, ((window.Width/8) - width/2), (window.Height/10) * 9)
     end
 
 end
