@@ -71,6 +71,13 @@ function love.update(dt)
         losing:play()
     end
 
+
+    if love.keyboard.isDown("w") then
+       if (airplane.y > 0) then 
+        airplane.y = airplane.y - 5
+       end
+    end
+
     if love.keyboard.isDown("s") then
         if (airplane.y < (window.Height- airplane.Height)) then 
         airplane.y = airplane.y + 5
@@ -79,6 +86,7 @@ function love.update(dt)
 
     if love.keyboard.isDown("r") then
         love.event.quit("restart")
+
     end
 
     function love.keypressed( key )
